@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/{any}', function () {
-    return view('admin.app');
-})->where('any', '.*');
+//Route::get('/{any}', function () {
+//    return view('admin.app');
+//})->where('any', '.*');
