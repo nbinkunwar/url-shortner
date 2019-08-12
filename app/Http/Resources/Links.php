@@ -18,7 +18,7 @@ class Links extends JsonResource
             'id' => $this->id,
             'long_url' => $this->long_url,
             'short_url' => $this->short_url,
-            'modified_url' => url('/').$this->short_url,
+            'modified_url' => url('/').'/'.$this->short_url,
             'clicks' => $this->clicks,
             'created_at' => $this->created_at
         ];

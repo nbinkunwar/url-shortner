@@ -11,6 +11,5 @@
 |
 */
 
-Route::get('/{any}', function () {
-    return view('admin.app');
-})->where('any', '.*');
+Route::get('/{any}', 'HomeController@index')->where('any', '|login|(dashboard)?');
+Route::get('{shortUrl}','HomeController@getLink');
