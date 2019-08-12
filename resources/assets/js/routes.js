@@ -4,6 +4,8 @@ import VueRouter from 'vue-router';
 import Dashboard from './components/Dashboard';
 import Home from './components/Home';
 
+Vue.use(VueRouter);
+
 const router = new VueRouter({
     mode: 'history',
     routes: [

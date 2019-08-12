@@ -24,7 +24,7 @@ class UrlShortenRequest extends FormRequest
     public function rules()
     {
         return [
-            'long_url'=>'required|string|unique:links,long_url',
+            'long_url'=>'required|string|active_url|url',
 
         ];
     }

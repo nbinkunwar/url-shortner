@@ -28,9 +28,13 @@ class UrlShortnerService
     {
         $this->longUrl = $longUrl;
         $this->expire_at = $expire_at;
-        $this->canBeShortened();
+        if($is_shortened = $this->canBeShortened())
+        {
+            return  $is_shortened;
+        }
+
         $short_url = $this->shortenUrl();
-        $this->linkRepository->fillAndSave(['long_url'=>$this->longUrl,'short_url'=>$short_url,'expire_at'=>$this->expire_at]);
+        $this->linkRepository->fillAndSave(['long_url'=>$longUrl,'short_url'=>$short_url,'expire_at'=>$this->expire_at]);
         return $this->getFormat().'/'.$short_url;
 
     }
@@ -49,11 +53,7 @@ class UrlShortnerService
      */
     protected function canBeShortened()
     {
-        $is_shortened = $this->linkRepository->findBy('long_url',$this->longUrl);
-        if($is_shortened)
-        {
-            throw new \Exception('Url already shortened',400);
-        }
+        return $this->linkRepository->findBy('long_url',$this->longUrl);
     }
 
     /**

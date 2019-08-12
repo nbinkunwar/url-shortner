@@ -9,9 +9,18 @@ require('./bootstrap');
 
 import Vue from 'vue';
 
+import  axios from 'axios';
 import Routes from './routes.js';
 
 import App from './views/App';
+// Vue.use(HTTP);
+
+axios.create({
+    baseURL: 'http://url-shortner.local.com/api/v1/',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
 
 const app = new Vue({
     el:'#app',

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UrlShortenRequest;
 use App\Services\UrlShortnerService;
 use Illuminate\Http\Request;
+use App\Http\Resources\Links as LinkResource;
 
 class LinkController extends Controller
 {
@@ -23,14 +24,15 @@ class LinkController extends Controller
 
     /**
      * @param UrlShortenRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return LinkResource
      * @throws \Exception
      */
     public function shorten(UrlShortenRequest $request)
     {
-        $short_url = $this->shortenService->shorten($request->long_uri,$request->expire_at);
+        $link = $this->shortenService->shorten($request->long_url,$request->expire_at);
+        return new LinkResource($link);
 //        return response()->json($short_url->toArray());
-        return response()->json(['short_uri'=>$short_url]);
+//        return response()->json(['short_uri'=>$short_url]);
     }
 
 }
