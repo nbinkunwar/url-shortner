@@ -17,7 +17,13 @@
                 :loading="loading"
                 :items-per-page="10"
                 class="elevation-1"
-        ></v-data-table>
+        ><template v-slot:item.action="{ item }">
+            <v-icon
+                small
+                @click="deleteItem(item)"
+        >delete</v-icon>
+        </template>
+        </v-data-table>
     </div>
 </template>
 <script>
@@ -32,22 +38,20 @@
                 loading: true,
                 errors:{},
                 options:{},
+                base_url:'http://url-shortner.local.com/api/v1/',
                 headers:[
                     {text:'Long Url',value:'long_url'},
                     {text:'Short Url',value:'short_url'},
                     {text:'Clicks',value:'clicks'},
-                    {text:'Created At',value:'created_at'}
+                    {text:'Created At',value:'created_at'},
+                    { text: 'Actions', value: 'action', sortable: false },
                 ]
             }
         },
         watch: {
             options: {
                 handler () {
-                    this.getDataFromApi()
-                        .then(data => {
-                            this.links = data.links
-                            this.totalItems = data.meta.total
-                        })
+                    this.getLinks();
                 },
                 deep: true,
             },
@@ -62,9 +66,19 @@
             submit(){
 
             },
+            deleteItem (item) {
+                const index = this.links.indexOf(item);
+                confirm('Are you sure you want to delete this item?') && this.links.splice(index, 1);
+                axios.delete(this.base_url+'links/'+item.id).then(response => {
+                    this.getLinks();
+                }).catch(error => {
+
+                })
+
+            },
             getLinks(){
                 this.erros = {};
-                let request_url = 'http://url-shortner.local.com/api/v1/links';
+                let request_url = this.base_url+'links';
                 if(this.fields.long_url)
                 {
                     request_url+='?long_url='+this.fields.long_url;
