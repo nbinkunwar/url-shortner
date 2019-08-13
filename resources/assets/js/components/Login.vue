@@ -37,6 +37,8 @@
                 this.erros = {};
                 axios.post('http://url-shortner.local.com/api/v1/login',this.fields).then(response => {
                     console.log(response);
+                    localStorage.setItem('token',response.data.success.token);
+                    this.$router.push('dashboard');
                 }).catch(error => {
                     if(error.response.status == 422){
                         this.errors = error.response.data.errors || {}

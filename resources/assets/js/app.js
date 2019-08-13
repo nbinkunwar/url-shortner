@@ -11,19 +11,20 @@ import Vue from 'vue';
 
 import  axios from 'axios';
 import Routes from './routes.js';
+import Vuetify from 'vuetify';
 
 import App from './views/App';
-// Vue.use(HTTP);
 
-axios.create({
-    baseURL: 'http://url-shortner.local.com/api/v1/',
-    headers: {
-        'Content-Type': 'application/json'
-    }
-});
+import interceptor from './axios-interceptor';
+
+Vue.use([axios,interceptor]);
+Vue.use(Vuetify);
+const opts = {};
 
 const app = new Vue({
     el:'#app',
+    axios,
+    vuetify: new Vuetify(opts),
     router: Routes,
     render: h => h(App)
 });

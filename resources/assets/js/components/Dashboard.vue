@@ -9,22 +9,15 @@
             </div>
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
-    <div class="table">
-    <table>
-        <thead>
-        <tr>
-        <th>ID</th>
-        <th>Long Url</th>
-        <th>Short Url</th>
-        <th>Created At</th>
-        <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-if="links" v-for="link in links"></tr>
-        </tbody>
-    </table>
-    </div>
+        <v-data-table
+                :headers="headers"
+                :items="links"
+                :options.sync="options"
+                :server-items-length="totalItems"
+                :loading="loading"
+                :items-per-page="10"
+                class="elevation-1"
+        ></v-data-table>
     </div>
 </template>
 <script>
@@ -35,13 +28,36 @@
             return {
                 fields:{},
                 links:[],
+                totalItems: 0,
+                loading: true,
                 errors:{},
+                options:{},
+                headers:[
+                    {text:'Long Url',value:'long_url'},
+                    {text:'Short Url',value:'short_url'},
+                    {text:'Clicks',value:'clicks'},
+                    {text:'Created At',value:'created_at'}
+                ]
             }
+        },
+        watch: {
+            options: {
+                handler () {
+                    this.getDataFromApi()
+                        .then(data => {
+                            this.links = data.links
+                            this.totalItems = data.meta.total
+                        })
+                },
+                deep: true,
+            },
         },
         mounted() {
             this.getLinks();
             // console.log(this.apiUrl);
         },
+
+
         methods:{
             submit(){
 
@@ -54,6 +70,8 @@
                     request_url+='?long_url='+this.fields.long_url;
                 }
                 axios.get(request_url).then(response => {
+                    this.links = response.data.data;
+                    this.totalItems = response.data.meta.total;
                     console.log(response);
                 }).catch(error => {
                     if(error.response.status == 422){

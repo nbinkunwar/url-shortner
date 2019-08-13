@@ -27,12 +27,12 @@ class LinkController extends Controller
 
     /**
      * @param Request $request
-     * @return LinkResource
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
         $links = $this->linkInterface->getBySearch($request->only(['short_url','long_url']));
-        return new LinkResource($links);
+        return LinkResource::collection($links);
     }
 
     /**
@@ -46,6 +46,10 @@ class LinkController extends Controller
         return new LinkResource($link);
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($id)
     {
         if ($this->linkInterface->remove($id))

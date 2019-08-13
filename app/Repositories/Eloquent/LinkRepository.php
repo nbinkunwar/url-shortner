@@ -39,12 +39,17 @@ class LinkRepository extends BaseRepository implements LinkInterface
         return $link->fill(['clicks'=>$link->clicks+1])->save();
     }
 
+    /**
+     * @param array $searchData
+     * @return mixed
+     */
     public function getBySearch($searchData = [])
     {
+        $curModel = $this->model;
         foreach ($searchData as $key=>$search)
         {
-            $this->model->where($key,'like','%'.$search.'%');
+            $curModel = $curModel->where($key,'like','%'.$search.'%');
         }
-        $this->model->get();
+        return $curModel->paginate();
     }
 }
