@@ -35,6 +35,10 @@ class HomeController extends Controller
         if(!$link){
             abort(404);
         }
+        if($link->deleted_at)
+        {
+            abort(410);
+        }
         $this->linkInterface->increaseClickCount($link->id);
         return redirect()->to($link->long_url);
     }

@@ -26,7 +26,7 @@ class LinkRepository extends BaseRepository implements LinkInterface
      */
     public function findByShortUrl($shortUrl)
     {
-        return $this->findBy('short_url',$shortUrl);
+        return $this->model->where('short_url',$shortUrl)->withTrashed()->first();
     }
 
     /**
