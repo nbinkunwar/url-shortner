@@ -11,6 +11,6 @@ class Link extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['short_url','long_url','clicks','expire_at'];
+    protected $fillable = ['short_url','long_url','clicks','expire_at','is_expired'];
 
 }

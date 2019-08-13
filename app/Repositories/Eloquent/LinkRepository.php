@@ -26,7 +26,7 @@ class LinkRepository extends BaseRepository implements LinkInterface
      */
     public function findByShortUrl($shortUrl)
     {
-        return $this->model->where('short_url',$shortUrl)->withTrashed()->first();
+        return $this->model->where('short_url',$shortUrl)->where('is_expired','!=',1)->withTrashed()->first();
     }
 
     /**
@@ -52,5 +52,23 @@ class LinkRepository extends BaseRepository implements LinkInterface
         }
 
         return $curModel->withTrashed()->paginate();
+    }
+
+    /**
+     * @param $current_date_time
+     * @return mixed
+     */
+    public function getExpirableLinks($current_date_time)
+    {
+        return $this->model->where('expire_at','<=',$current_date_time)->get();
+    }
+
+    /**
+     * @param $current_date_time
+     * @return mixed
+     */
+    public function setLinksExpired($current_date_time)
+    {
+        return $this->model->where('expire_at','<=',$current_date_time)->where('is_expired','!=',1)->update(['is_expired'=>1]);
     }
 }

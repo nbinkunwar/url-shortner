@@ -24,6 +24,8 @@
                 class="elevation-1"
         > <template v-slot:item.is_deleted="{ item }">{{ item.is_deleted?'Yes':'No' }}
         </template>
+            <template v-slot:item.is_expired="{ item }">{{ item.is_expired?'Yes':'No' }}
+            </template>
             <template v-slot:item.action="{ item }">
             <v-icon
                     v-if="!item.is_deleted"
@@ -51,6 +53,8 @@
                     {text:'Long Url',value:'long_url'},
                     {text:'Short Url',value:'short_url'},
                     {text:'Clicks',value:'clicks'},
+                    {text:'Expire At',value:'expire_at'},
+                    {text:'Expired?',value:'is_expired'},
                     {text:'Created At',value:'created_at'},
                     {text:'Deleted?',value:'is_deleted'},
                     { text: 'Actions', value: 'action', sortable: false },

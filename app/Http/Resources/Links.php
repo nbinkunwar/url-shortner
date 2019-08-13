@@ -20,6 +20,8 @@ class Links extends JsonResource
             'short_url' => $this->short_url,
             'modified_url' => url('/').'/'.$this->short_url,
             'clicks' => $this->clicks,
+            'expire_at' => $this->expire_at,
+            'is_expired' => $this->is_expired,
             'created_at' => $this->created_at,
             'is_deleted' => $this->deleted_at?true:false
         ];

@@ -24,4 +24,17 @@ interface LinkInterface
      * @return mixed
      */
     public function getBySearch($searchData = []);
+
+    /**
+     * @param $current_date_time
+     * @return mixed
+     */
+    public function getExpirableLinks($current_date_time);
+
+    /**
+     * @param $current_date_time
+     * @return mixed
+     */
+    public function setLinksExpired($current_date_time);
+
 }

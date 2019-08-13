@@ -13,3 +13,18 @@ let mix = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');
+mix.webpackConfig({
+    module: {
+        rules: [
+            {
+                test: /\.styl$/,
+                loader: ['style-loader', 'css-loader', 'stylus-loader']
+            }
+        ]
+    }
+});
+mix.autoload({
+    'jquery': ['$', 'window.jQuery', 'jQuery'],
+    'vue': ['Vue','window.Vue'],
+    'moment': ['moment','window.moment'],
+})

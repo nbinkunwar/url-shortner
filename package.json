@@ -14,11 +14,16 @@
         "bootstrap-sass": "^3.3.7",
         "cross-env": "^5.1",
         "laravel-mix": "^1.0",
-        "lodash": "^4.17.4"
+        "lodash": "^4.17.4",
+        "stylus": "^0.54.5",
+        "stylus-loader": "^3.0.2"
     },
     "dependencies": {
+        "luxon": "^1.17.2",
         "vue": "^2.6.10",
+        "vue-ctk-date-time-picker": "^2.1.1",
         "vue-router": "^3.1.2",
-        "vuetify": "^2.0.5"
+        "vuetify": "^2.0.5",
+        "weekstart": "^1.0.0"
     }
 }
