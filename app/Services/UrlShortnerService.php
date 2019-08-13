@@ -33,8 +33,8 @@ class UrlShortnerService
             return  $is_shortened;
         }
 
-        $short_url = $this->shortenUrl();
-        $link = $this->linkRepository->fillAndSave(['long_url'=>$longUrl,'short_url'=>$short_url,'expire_at'=>$this->expire_at]);
+//        $short_url = $this->shortenUrl();
+        $link = $this->linkRepository->fillAndSave(['long_url'=>$longUrl,'expire_at'=>$this->expire_at]);
         return  $link;
 
     }

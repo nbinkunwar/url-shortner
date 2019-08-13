@@ -15,7 +15,7 @@ class CreateLinksTable extends Migration
     {
         Schema::create('links', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('short_url')->unique();
+            $table->string('short_url')->nullable()->unique();
             $table->longText('long_url');
             $table->integer('clicks')->default(0);
             $table->timestamp('expire_at')->nullable();

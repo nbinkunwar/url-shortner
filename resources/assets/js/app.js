@@ -15,7 +15,6 @@ import Vuetify from 'vuetify';
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 
-
 import App from './views/App';
 
 import interceptor from './axios-interceptor';
@@ -23,6 +22,7 @@ import interceptor from './axios-interceptor';
 Vue.use([axios,interceptor]);
 Vue.use(Vuetify);
 const opts = {};
+
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 
 const app = new Vue({

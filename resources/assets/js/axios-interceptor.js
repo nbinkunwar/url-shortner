@@ -1,8 +1,25 @@
 import  axios from 'axios';
 import  Vue from 'vue';
+import VueProgressBar from 'vue-progressbar';
+const options = {
+    color: '#bffaf3',
+    failedColor: '#874b4b',
+    thickness: '5px',
+    transition: {
+        speed: '0.2s',
+        opacity: '0.6s',
+        termination: 300
+    },
+    autoRevert: true,
+    location: 'left',
+    inverse: false
+};
+
+Vue.use(VueProgressBar, {});
+let vm = new Vue({});
 
 axios.interceptors.response.use((response) => { // intercept the global error
-    console.log('here now');
+    vm.$Progress.finish();
     return response
 }, function (error) {
     let originalRequest = error.config;
@@ -15,6 +32,7 @@ axios.interceptors.response.use((response) => { // intercept the global error
 });
 
 axios.interceptors.request.use(config=>{
+    vm.$Progress.start();
     const token = localStorage.getItem('token');
     if(token){
         config.headers.Authorization = `Bearer ${token}`;

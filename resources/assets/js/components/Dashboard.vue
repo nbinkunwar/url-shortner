@@ -20,9 +20,9 @@
                 :options.sync="options"
                 :server-items-length="totalItems"
                 :loading="loading"
-                :items-per-page="10"
+                :items-per-page="15"
                 class="elevation-1"
-        > <template v-slot:item.is_deleted="{ item }">{{ item.is_deleted?'Yes':'No' }}
+        data-app> <template v-slot:item.is_deleted="{ item }">{{ item.is_deleted?'Yes':'No' }}
         </template>
             <template v-slot:item.is_expired="{ item }">{{ item.is_expired?'Yes':'No' }}
             </template>
@@ -90,8 +90,6 @@
 
                     })
                 }
-
-
             },
             getLinks(){
                 this.erros = {};
