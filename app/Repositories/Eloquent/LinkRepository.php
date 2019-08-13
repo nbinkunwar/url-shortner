@@ -50,6 +50,7 @@ class LinkRepository extends BaseRepository implements LinkInterface
         {
             $curModel = $curModel->where($key,'like','%'.$search.'%');
         }
-        return $curModel->paginate();
+
+        return $curModel->withTrashed()->paginate();
     }
 }

@@ -7,6 +7,11 @@
                 <input type="text" name="long_url" class="form-control" id="longUrlInput" v-model="fields.long_url" placeholder="Enter URl">
                 <div v-if="errors && errors.long_url" class="text-danger">{{ errors.long_url[0] }}</div>
             </div>
+            <div class="form-group">
+                <label for="shortUrlInput">Search By Short Url</label>
+                <input type="text" name="short_url" class="form-control" id="shortUrlInput" v-model="fields.short_url" placeholder="Enter URl">
+                <div v-if="errors && errors.short_url" class="text-danger">{{ errors.short_url[0] }}</div>
+            </div>
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
         <v-data-table
@@ -17,8 +22,11 @@
                 :loading="loading"
                 :items-per-page="10"
                 class="elevation-1"
-        ><template v-slot:item.action="{ item }">
+        > <template v-slot:item.is_deleted="{ item }">{{ item.is_deleted?'Yes':'No' }}
+        </template>
+            <template v-slot:item.action="{ item }">
             <v-icon
+                    v-if="!item.is_deleted"
                 small
                 @click="deleteItem(item)"
         >delete</v-icon>
@@ -44,6 +52,7 @@
                     {text:'Short Url',value:'short_url'},
                     {text:'Clicks',value:'clicks'},
                     {text:'Created At',value:'created_at'},
+                    {text:'Deleted?',value:'is_deleted'},
                     { text: 'Actions', value: 'action', sortable: false },
                 ]
             }
@@ -68,21 +77,35 @@
             },
             deleteItem (item) {
                 const index = this.links.indexOf(item);
-                confirm('Are you sure you want to delete this item?') && this.links.splice(index, 1);
-                axios.delete(this.base_url+'links/'+item.id).then(response => {
-                    this.getLinks();
-                }).catch(error => {
 
-                })
+                if(confirm('Are you sure you want to delete this item?'))
+                {
+                    axios.delete(this.base_url+'links/'+item.id).then(response => {
+                        this.getLinks();
+                    }).catch(error => {
+
+                    })
+                }
+
 
             },
             getLinks(){
                 this.erros = {};
                 let request_url = this.base_url+'links';
-                if(this.fields.long_url)
+
+                if(this.fields.long_url || this.fields.short_url)
                 {
-                    request_url+='?long_url='+this.fields.long_url;
+                    request_url+='?';
+                    if(this.fields.long_url)
+                    {
+                        request_url+='long_url='+this.fields.long_url;
+                    }
+                    if(this.fields.short_url)
+                    {
+                        request_url+='short_url='+this.fields.short_url;
+                    }
                 }
+
                 axios.get(request_url).then(response => {
                     this.links = response.data.data;
                     this.totalItems = response.data.meta.total;

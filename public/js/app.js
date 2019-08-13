@@ -37097,6 +37097,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -37110,7 +37118,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             errors: {},
             options: {},
             base_url: 'http://url-shortner.local.com/api/v1/',
-            headers: [{ text: 'Long Url', value: 'long_url' }, { text: 'Short Url', value: 'short_url' }, { text: 'Clicks', value: 'clicks' }, { text: 'Created At', value: 'created_at' }, { text: 'Actions', value: 'action', sortable: false }]
+            headers: [{ text: 'Long Url', value: 'long_url' }, { text: 'Short Url', value: 'short_url' }, { text: 'Clicks', value: 'clicks' }, { text: 'Created At', value: 'created_at' }, { text: 'Deleted?', value: 'is_deleted' }, { text: 'Actions', value: 'action', sortable: false }]
         };
     },
 
@@ -37135,19 +37143,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             var index = this.links.indexOf(item);
-            confirm('Are you sure you want to delete this item?') && this.links.splice(index, 1);
-            axios.delete(this.base_url + 'links/' + item.id).then(function (response) {
-                _this.getLinks();
-            }).catch(function (error) {});
+
+            if (confirm('Are you sure you want to delete this item?')) {
+                axios.delete(this.base_url + 'links/' + item.id).then(function (response) {
+                    _this.getLinks();
+                }).catch(function (error) {});
+            }
         },
         getLinks: function getLinks() {
             var _this2 = this;
 
             this.erros = {};
             var request_url = this.base_url + 'links';
-            if (this.fields.long_url) {
-                request_url += '?long_url=' + this.fields.long_url;
+
+            if (this.fields.long_url || this.fields.short_url) {
+                request_url += '?';
+                if (this.fields.long_url) {
+                    request_url += 'long_url=' + this.fields.long_url;
+                }
+                if (this.fields.short_url) {
+                    request_url += 'short_url=' + this.fields.short_url;
+                }
             }
+
             axios.get(request_url).then(function (response) {
                 _this2.links = response.data.data;
                 _this2.totalItems = response.data.meta.total;
@@ -37223,6 +37241,45 @@ var render = function() {
               : _vm._e()
           ]),
           _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "shortUrlInput" } }, [
+              _vm._v("Search By Short Url")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.fields.short_url,
+                  expression: "fields.short_url"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "short_url",
+                id: "shortUrlInput",
+                placeholder: "Enter URl"
+              },
+              domProps: { value: _vm.fields.short_url },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.fields, "short_url", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.errors && _vm.errors.short_url
+              ? _c("div", { staticClass: "text-danger" }, [
+                  _vm._v(_vm._s(_vm.errors.short_url[0]))
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
           _c(
             "button",
             { staticClass: "btn btn-primary", attrs: { type: "submit" } },
@@ -37248,22 +37305,31 @@ var render = function() {
         },
         scopedSlots: _vm._u([
           {
+            key: "item.is_deleted",
+            fn: function(ref) {
+              var item = ref.item
+              return [_vm._v(_vm._s(item.is_deleted ? "Yes" : "No") + "\n    ")]
+            }
+          },
+          {
             key: "item.action",
             fn: function(ref) {
               var item = ref.item
               return [
-                _c(
-                  "v-icon",
-                  {
-                    attrs: { small: "" },
-                    on: {
-                      click: function($event) {
-                        return _vm.deleteItem(item)
-                      }
-                    }
-                  },
-                  [_vm._v("delete")]
-                )
+                !item.is_deleted
+                  ? _c(
+                      "v-icon",
+                      {
+                        attrs: { small: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteItem(item)
+                          }
+                        }
+                      },
+                      [_vm._v("delete")]
+                    )
+                  : _vm._e()
               ]
             }
           }
