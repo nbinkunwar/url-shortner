@@ -1,5 +1,5 @@
 <template>
-
+    <v-app>
     <div class="container">
         <form @submit.prevent="getLinks">
             <div class="form-group">
@@ -20,7 +20,7 @@
                 :options.sync="options"
                 :server-items-length="totalItems"
                 :loading="loading"
-                :items-per-page="15"
+                :items-per-page="this.options.itemsPerPage"
                 class="elevation-1"
         data-app> <template v-slot:item.is_deleted="{ item }">{{ item.is_deleted?'Yes':'No' }}
         </template>
@@ -35,6 +35,7 @@
         </template>
         </v-data-table>
     </div>
+    </v-app>
 </template>
 <script>
     import router from "../routes";
@@ -47,7 +48,10 @@
                 totalItems: 0,
                 loading: true,
                 errors:{},
-                options:{},
+                options:{
+                    'itemsPerPage':5,
+                    'page':1
+                },
                 base_url:'http://url-shortner.local.com/api/v1/',
                 headers:[
                     {text:'Long Url',value:'long_url'},
@@ -94,7 +98,6 @@
             getLinks(){
                 this.erros = {};
                 let request_url = this.base_url+'links';
-
                 if(this.fields.long_url || this.fields.short_url)
                 {
                     request_url+='?';
@@ -106,12 +109,18 @@
                     {
                         request_url+='short_url='+this.fields.short_url;
                     }
+
+                    // console.log(this.options)
+
+                    // this.options.forEach(function (k) {
+                    //     console.log(v)
+                    // })
                 }
 
-                axios.get(request_url).then(response => {
+                axios.get(request_url,{'params':this.options}).then(response => {
                     this.links = response.data.data;
                     this.totalItems = response.data.meta.total;
-                    console.log(response);
+                    this.length = response.data.last_page;
                 }).catch(error => {
                     if(error.response.status == 422){
                         this.errors = error.response.data.errors || {}

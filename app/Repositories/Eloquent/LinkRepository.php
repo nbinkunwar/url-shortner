@@ -45,13 +45,15 @@ class LinkRepository extends BaseRepository implements LinkInterface
      */
     public function getBySearch($searchData = [])
     {
+        $page = request()->get('page');
+        $itemsPerPage = request()->get('itemsPerPage');
         $curModel = $this->model;
         foreach ($searchData as $key=>$search)
         {
             $curModel = $curModel->where($key,'like','%'.$search.'%');
         }
 
-        return $curModel->withTrashed()->paginate();
+        return $curModel->withTrashed()->paginate($itemsPerPage);
     }
 
     /**
