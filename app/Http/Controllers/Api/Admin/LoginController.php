@@ -21,10 +21,10 @@ class LoginController extends Controller
         if(auth()->attempt(['email' => request('email'), 'password' => request('password')])){
             $user = auth()->user();
             $success['token'] =  $user->createToken('MyApp')->accessToken;
-            return response()->json(['success' => $success], $this->successStatus);
+            return response()->json( $success, $this->successStatus);
         }
         else{
-            return response()->json(['error'=>'Unauthorised'], 401);
+            return response()->json(['data'=>['message'=>'Unauthorised']], 401);
         }
 
     }
