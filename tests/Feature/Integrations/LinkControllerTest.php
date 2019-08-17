@@ -2,15 +2,8 @@
 
 namespace Tests\Feature\Integrations;
 
-use App\Http\Requests\UrlShortenRequest;
-use App\Http\Resources\Links;
-use App\Models\Link;
-use App\Repositories\Contracts\LinkInterface;
-use App\Repositories\Eloquent\LinkRepository;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\Request;
-use Mockery\Mock;
 use Tests\ControllerTestCase;
 
 class LinkControllerTest extends ControllerTestCase
@@ -38,7 +31,7 @@ class LinkControllerTest extends ControllerTestCase
      *
      * @covers ::delete
      */
-    public function it_deletes_link()
+    public function it_soft_deletes_link()
     {
         $link = factory('App\Models\Link')->create([
             'long_url'=>'http://test.com/longtesturl'
@@ -47,6 +40,42 @@ class LinkControllerTest extends ControllerTestCase
             'Authorization'=>'Bearer '.$this->getAuthUser(),
         ])->deleteJson('/api/v1/links/'.$link->id);
         $this->assertSoftDeleted('links', $link->toArray());
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::shorten
+     */
+    public function it_throws_validation_exception_for_create_link_request()
+    {
+        $response = $this->json('post','/api/v1/shorten',[]);
+
+        $this->assertEquals([
+            'message'=>'The given data was invalid.',
+            'errors' => [
+                'long_url' => [
+                    'The long url field is required.',
+                ],
+            ],
+        ], json_decode($response->getContent(),1));
+
+        $this->assertEquals(422,$response->status());
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::shorten
+     */
+    public function it_creates_link()
+    {
+        $requestData = [
+            'long_url'=>'http://test.com/longtesturl123'
+        ];
+        $response = $this->json('post','/api/v1/shorten',$requestData);
+        $this->assertDatabaseHas('links',$requestData);
+        $this->assertEquals(200,$response->status());
     }
 
 
