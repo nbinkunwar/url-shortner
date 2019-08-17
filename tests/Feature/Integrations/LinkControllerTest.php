@@ -40,10 +40,12 @@ class LinkControllerTest extends ControllerTestCase
      */
     public function it_deletes_link()
     {
-        $link = factory('App\Models\Link')->create();
-        $this->withHeaders([
+        $link = factory('App\Models\Link')->create([
+            'long_url'=>'http://test.com/longtesturl'
+        ]);
+        $response = $this->withHeaders([
             'Authorization'=>'Bearer '.$this->getAuthUser(),
-        ])->json('delete','/api/v1/delete/'.$link->id);
+        ])->deleteJson('/api/v1/links/'.$link->id);
         $this->assertSoftDeleted('links', $link->toArray());
     }
 
