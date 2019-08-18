@@ -21,7 +21,7 @@ npm install
 npm run dev
 ```  
 
-```php artisan link:expire``` Expires all links with expiration date-time value less than now.
+```php artisan link:expire``` Expires all links with expiration date-time value less than current timestamp.
 
 ```php artisan blockpattern:change '/\invalid\b/'``` Sets block pattern for input url
 
