@@ -67,6 +67,31 @@ class LinkControllerTest extends ControllerTestCase
      * @test
      *
      * @covers ::shorten
+     *
+     */
+    public function it_throws_validation_exception_for_black_listed_url()
+    {
+        $response = $this->json('post','/api/v1/shorten',[
+            'long_url'=>'http://invalid.com'
+        ]);
+
+        $this->assertEquals([
+            'message'=>'The given data was invalid.',
+            'errors' => [
+                'long_url' => [
+                    'This type of url is blacklisted.',
+                ],
+            ],
+        ], json_decode($response->getContent(),1));
+
+        $this->assertEquals(422,$response->status());
+
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::shorten
      */
     public function it_creates_link()
     {
