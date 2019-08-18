@@ -35,8 +35,7 @@
         methods:{
             submit(){
                 this.erros = {};
-                axios.post('http://url-shortner.local.com/api/v1/login',this.fields).then(response => {
-                    console.log(response);
+                axios.post('/login',this.fields).then(response => {
                     localStorage.setItem('token',response.data.token);
                     this.$router.push('dashboard');
                 }).catch(error => {

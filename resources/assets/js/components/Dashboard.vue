@@ -52,7 +52,6 @@
                     'itemsPerPage':5,
                     'page':1
                 },
-                base_url:'http://url-shortner.local.com/api/v1/',
                 headers:[
                     {text:'Long Url',value:'long_url'},
                     {text:'Short Url',value:'short_url'},
@@ -88,7 +87,7 @@
 
                 if(confirm('Are you sure you want to delete this item?'))
                 {
-                    axios.delete(this.base_url+'links/'+item.id).then(response => {
+                    axios.delete('/links/'+item.id).then(response => {
                         this.getLinks();
                     }).catch(error => {
 
@@ -97,7 +96,7 @@
             },
             getLinks(){
                 this.erros = {};
-                let request_url = this.base_url+'links';
+                let request_url = '/links';
                 if(this.fields.long_url || this.fields.short_url)
                 {
                     request_url+='?';
@@ -109,12 +108,6 @@
                     {
                         request_url+='short_url='+this.fields.short_url;
                     }
-
-                    // console.log(this.options)
-
-                    // this.options.forEach(function (k) {
-                    //     console.log(v)
-                    // })
                 }
 
                 axios.get(request_url,{'params':this.options}).then(response => {

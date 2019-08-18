@@ -32,7 +32,7 @@
         methods:{
             submit(){
                 this.erros = {};
-                axios.post('http://url-shortner.local.com/api/v1/shorten',this.fields).then(response => {
+                axios.post('/shorten',this.fields).then(response => {
                     this.errors = {};
                     this.shortUrl = response.data.data.modified_url;
                 }).catch(error => {

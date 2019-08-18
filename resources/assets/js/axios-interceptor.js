@@ -18,12 +18,15 @@ const options = {
 Vue.use(VueProgressBar, {});
 let vm = new Vue({});
 
+axios.defaults.baseURL = '/api/v1';
+
 axios.interceptors.response.use((response) => { // intercept the global error
     vm.$Progress.finish();
     return response
 }, function (error) {
     let originalRequest = error.config;
-    if (error.response.status === 401 ) { // if the error is 401 and hasent already been retried
+    console.log('here');
+    if (error.response.status === 401 ) { // if the error is 401 and hasn't already been retried
         localStorage.removeItem('token');
         //logout();
         this.$router.push('/login');
