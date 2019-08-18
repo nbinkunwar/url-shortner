@@ -15,10 +15,15 @@ Url shortner which converts Long url to short sharable url made with laravel and
 
 ```
 composer install
+php artisan migrate
+php artisan db:seed
 npm install
+npm run dev
 ```  
 
 ```php artisan link:expire``` Expires all links with expiration date-time value less than now.
+
+```php artisan blockpattern:change '/\invalid\b/'``` Sets block pattern for input url
 
 To run schedule
 
