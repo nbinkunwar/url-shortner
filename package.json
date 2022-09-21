@@ -25,7 +25,7 @@
         "vue-ctk-date-time-picker": "^2.1.1",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.1.2",
-        "vuetify": "^2.0.5",
+        "vuetify": "^2.6.10",
         "weekstart": "^1.0.0"
     }
 }
