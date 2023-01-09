@@ -20,7 +20,7 @@
         "stylus-loader": "^3.0.2"
     },
     "dependencies": {
-        "luxon": "^1.17.2",
+        "luxon": "^1.28.1",
         "vue": "^2.6.10",
         "vue-ctk-date-time-picker": "^2.1.1",
         "vue-progressbar": "^0.7.5",
